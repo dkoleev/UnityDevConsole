@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4462589963433146389}
   - component: {fileID: 29095130}
   m_Layer: 0
-  m_Name: DevConsole_OldINputSystem
+  m_Name: DevConsole_InputManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
