@@ -45,3 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scale: 1
+  openConsoleKeyCode: 96
+  prevCommandInBuffer: 273
+  nextCommandInBuffer: 274
+  closeConsoleKeyCodes: 1b00000060000000

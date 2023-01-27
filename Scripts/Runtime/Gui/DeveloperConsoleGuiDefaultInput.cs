@@ -1,7 +1,13 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
     public class DeveloperConsoleGuiDefaultInput : DevConsoleGUI {
+        [SerializeField] private KeyCode openConsoleKeyCode = KeyCode.BackQuote;
+        [SerializeField] [Tooltip("When you invoke a command it's add to commands buffer.")] private KeyCode prevCommandInBuffer = KeyCode.UpArrow;
+        [SerializeField] [Tooltip("When you invoke a command it's add to commands buffer.")] private KeyCode nextCommandInBuffer = KeyCode.DownArrow;
+        [SerializeField] private List<KeyCode> closeConsoleKeyCodes = new List<KeyCode>();
+        
         private float _commandDelay = 0.1f;
         private float _commandDelayCurrent;
 
@@ -16,7 +22,7 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
 
         protected override void HandleShowConsole() {
             if (_commandDelayCurrent <= 0) {
-                if (Event.current.keyCode == KeyCode.BackQuote) {
+                if (Event.current.keyCode == openConsoleKeyCode) {
                     if (!ConsoleIsActive) {
                         ConsoleIsActive = true;
                         _commandDelayCurrent = _commandDelay;
@@ -27,8 +33,7 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
 
         protected override void HandleKeyboardInGUI() {
             if (_commandDelayCurrent <= 0) {
-                if (ConsoleIsActive && Event.current.isKey &&
-                    Event.current.keyCode is KeyCode.BackQuote or KeyCode.Escape) {
+                if (ConsoleIsActive && Event.current.isKey && closeConsoleKeyCodes.Contains(Event.current.keyCode)) {
                     HandleEscape();
                     _commandDelayCurrent = _commandDelay;
                     return;
@@ -39,11 +44,11 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
                     GUI.FocusControl("inputField");
                     _commandDelayCurrent = _commandDelay;
                 }
-                else if (Event.current.keyCode == KeyCode.UpArrow && !DevConsoleController.InputBufferEmpty) {
+                else if (Event.current.keyCode == prevCommandInBuffer && !DevConsoleController.InputBufferEmpty) {
                     _input = DevConsoleController.GetBufferCommand(true);
                     GUI.FocusControl("inputField");
                     _commandDelayCurrent = _commandDelay;
-                }else if (Event.current.keyCode == KeyCode.DownArrow) {
+                }else if (Event.current.keyCode == nextCommandInBuffer && !DevConsoleController.InputBufferEmpty) {
                     _input = DevConsoleController.GetBufferCommand(false);
                     GUI.FocusControl("inputField");
                     _commandDelayCurrent = _commandDelay;
