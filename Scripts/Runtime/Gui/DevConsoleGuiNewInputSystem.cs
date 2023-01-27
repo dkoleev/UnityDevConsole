@@ -18,14 +18,13 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
                 if (ConsoleIsActive) {
                     HandleEscape();
                 }
-            }
-            /*else if (keyboard.upArrowKey.wasPressedThisFrame) {
-                _input = _console.GetBufferCommand(false);
+            }else if (keyboard.upArrowKey.wasPressedThisFrame) {
+                _input = DevConsoleController.GetBufferCommand(true);
                 GUI.FocusControl("inputField");
             }else if (keyboard.downArrowKey.wasPressedThisFrame) {
-                _input = _console.GetBufferCommand(true);
+                _input = DevConsoleController.GetBufferCommand(false);
                 GUI.FocusControl("inputField");
-            }*/
+            }
 #endif
         }
     }

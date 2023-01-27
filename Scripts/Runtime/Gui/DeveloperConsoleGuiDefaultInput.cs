@@ -14,34 +14,38 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
 #endif
         }
 
-        protected override void HandleShowConsole() { 
-            if (Event.current.keyCode == KeyCode.BackQuote) {
-                if (!ConsoleIsActive) {
-                    ConsoleIsActive = true;
-                    _commandDelayCurrent = _commandDelay;
+        protected override void HandleShowConsole() {
+            if (_commandDelayCurrent <= 0) {
+                if (Event.current.keyCode == KeyCode.BackQuote) {
+                    if (!ConsoleIsActive) {
+                        ConsoleIsActive = true;
+                        _commandDelayCurrent = _commandDelay;
+                    }
                 }
             }
         }
 
         protected override void HandleKeyboardInGUI() {
             if (_commandDelayCurrent <= 0) {
+                if (ConsoleIsActive && Event.current.isKey &&
+                    Event.current.keyCode is KeyCode.BackQuote or KeyCode.Escape) {
+                    HandleEscape();
+                    _commandDelayCurrent = _commandDelay;
+                    return;
+                }
+                
                 if (Event.current.keyCode == KeyCode.Return) {
                     HandleEnterCommand();
                     GUI.FocusControl("inputField");
                     _commandDelayCurrent = _commandDelay;
                 }
-                /*else if (Event.current.keyCode == KeyCode.UpArrow) {
-                    _input = _console.GetBufferCommand(false);
+                else if (Event.current.keyCode == KeyCode.UpArrow && !DevConsoleController.InputBufferEmpty) {
+                    _input = DevConsoleController.GetBufferCommand(true);
                     GUI.FocusControl("inputField");
                     _commandDelayCurrent = _commandDelay;
                 }else if (Event.current.keyCode == KeyCode.DownArrow) {
-                    _input = _console.GetBufferCommand(true);
+                    _input = DevConsoleController.GetBufferCommand(false);
                     GUI.FocusControl("inputField");
-                    _commandDelayCurrent = _commandDelay;
-                } */
-                else if (ConsoleIsActive && 
-                           (Event.current.keyCode == KeyCode.BackQuote || Event.current.keyCode == KeyCode.Escape)) {
-                    HandleEscape();
                     _commandDelayCurrent = _commandDelay;
                 }
             }

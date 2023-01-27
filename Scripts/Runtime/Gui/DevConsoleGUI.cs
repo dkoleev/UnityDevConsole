@@ -13,6 +13,7 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
 
         protected bool ConsoleIsActive;
         protected bool HelpMenuIsActive;
+        protected int InputBufferIndex = 0;
         
         private void Awake() {
 #if ENABLE_DEV_CONSOLE
@@ -36,18 +37,7 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
                     return;
                 }
 
-                var command = _input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
-                switch (command.Length) {
-                    case 0:
-                        return;
-                    case 1:
-                        DevConsoleController.ExecuteCommand(command[0]);
-                        break;
-                    default:
-                        DevConsoleController.ExecuteCommand(command[0], command.ToList().GetRange(1, command.Length - 1).ToArray());
-                        break;
-                }
-
+                DevConsoleController.ExecuteCommand(_input);
                 _input = "";
             }
         }
