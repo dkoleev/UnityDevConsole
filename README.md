@@ -20,6 +20,13 @@ https://github.com/dkoleev/UnityDevConsole.git
   * For default [Input Manager](https://docs.unity3d.com/Manual/class-InputManager.html) drag `DevConsole_InputManager` prefab to scene.
   
   * For [New Input System](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.5/manual/index.html) - drag `DevConsole_NewInputSystem` prefab to scene.
+  
+  * Add `ENABLE_DEV_CONSOLE` define to `ProjectSettings -> Scripting Define Symbols`.
+  
+  ![image](https://user-images.githubusercontent.com/54948242/215025591-3be1c75e-9f0b-44ff-8eda-1f53fda5e3f0.png)
+  
+  > You can add `ENABLE_DEV_CONSOLE` for dev build and remove it for release build in your build pipline.
+
 
  ## How to use
   * Create `public static` method.
