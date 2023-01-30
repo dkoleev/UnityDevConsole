@@ -1,20 +1,18 @@
-using System;
-using System.Linq;
 using UnityEngine;
 
 namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
     public abstract class DevConsoleGUI : MonoBehaviour {
-       // [SerializeField] private KeyCode openConsoleKeyCode = KeyCode.BackQuote;
         [SerializeField] [Range(0.1f, 2f)] protected float scale = 1f;
         
-        protected string _input;
-        protected Vector2 _scroll;
-        protected bool _inputFocus;
-
+        protected string Input;
+        protected Vector2 Scroll;
         protected bool ConsoleIsActive;
-        protected bool HelpMenuIsActive;
         protected int InputBufferIndex = 0;
+        protected const string InputFieldName = "inputField";
         
+        private bool _inputFocused;
+        private bool _helpMenuIsActive;
+
         private void Awake() {
 #if ENABLE_DEV_CONSOLE
             RegisterCommands();
@@ -24,7 +22,7 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
         private void RegisterCommands() {
             DevConsoleController.RegisterCommands();
         }
-        
+
         private void OnGUI() {
 #if ENABLE_DEV_CONSOLE
             DrawGUI();
@@ -33,65 +31,67 @@ namespace Yogi.UnityDevConsole.Scripts.Runtime.Gui {
         
         protected void HandleEnterCommand() {
             if (ConsoleIsActive) {
-                if (string.IsNullOrWhiteSpace(_input)) {
+                if (string.IsNullOrWhiteSpace(Input)) {
                     return;
                 }
 
-                DevConsoleController.ExecuteCommand(_input);
-                _input = "";
+                DevConsoleController.ExecuteCommand(Input);
+                Input = string.Empty;
             }
         }
 
-        protected void HandleEscape() {
-            if (HelpMenuIsActive) {
-                HelpMenuIsActive = false;
-                GUI.FocusControl("inputField");
+        protected void Hide() {
+            if (_helpMenuIsActive) {
+                _helpMenuIsActive = false;
+                GUI.FocusControl(InputFieldName);
             } else {
+                Input = string.Empty;
                 ConsoleIsActive = false;
-                _inputFocus = false;
+                _inputFocused = false;
             }
         }
 
-        protected virtual void HandleShowConsole() {
-        }
-        
         protected virtual void HandleKeyboardInGUI() {
         }
         
+        protected virtual void HandleEscape() {
+        }
+
         private void DrawGUI() {
             if (!ConsoleIsActive) {
-                HandleShowConsole();
                 return;
             }
             
-            HandleKeyboardInGUI();
-
             var inputHeight = 100 * scale;
             var y = Screen.height - inputHeight;
 
-            if (HelpMenuIsActive) {
+            if (_helpMenuIsActive) {
                 ShowHelp(y);
             }
 
             GUI.Box(new Rect(0, y, Screen.width, 100 * scale), "");
             GUI.backgroundColor = Color.black;
-            
+
             var labelStyle = new GUIStyle("TextField");
             labelStyle.fontStyle = FontStyle.Normal;
             var fontSize = 40 * scale;
             labelStyle.fontSize = (int)fontSize;
             labelStyle.alignment = TextAnchor.MiddleLeft;
-            GUI.SetNextControlName("inputField");
-            _input = GUI.TextField(new Rect(10f, y + 10f, Screen.width - 20, 70f * scale), _input, labelStyle);
+            GUI.SetNextControlName(InputFieldName);
+            Input = GUI.TextField(new Rect(10f, y + 10f, Screen.width - 20, 70f * scale), Input, labelStyle);
 
             SetFocusTextField();
+            HandleEscape();
+            if (GUI.GetNameOfFocusedControl() == InputFieldName) {
+                 HandleKeyboardInGUI();
+            }
         }
 
         protected virtual void SetFocusTextField() {
-            if (!_inputFocus) {
-                _inputFocus = true;
-                GUI.FocusControl("inputField");
-                _input = string.Empty;
+            if (!_inputFocused) {
+                _inputFocused = true;
+                GUI.FocusControl(InputFieldName);
+                Input = string.Empty;
             }
         }
 
