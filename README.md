@@ -8,19 +8,29 @@ Allows executing console command in runtime.
 ![](https://gyazo.com/83f2c1207be51770b07bd21b5b1462ac.gif)
 
 ## Installation
-Use [UPM](https://docs.unity3d.com/Manual/upm-ui.html) to install the package via the following git URL: 
+You can install `DevConsole` using any of the following methods
 
-```
-https://github.com/dkoleev/UnityDevConsole.git
-```
+1. __[UPM Branch](https://docs.unity3d.com/Manual/upm-ui.html)__
 
-![](https://gyazo.com/8c8fc97345fc64f53d62814cce571974.gif)
+    Use [UPM](https://docs.unity3d.com/Manual/upm-ui.html) to install the package via the following git URL: 
+
+    ```
+    https://github.com/dkoleev/UnityDevConsole.git
+    ```
+
+    ![](https://gyazo.com/8c8fc97345fc64f53d62814cce571974.gif)
+
+1. __[OpenUPM](https://openupm.com/)__
+
+    ```
+    openupm add com.yogi.devconsole
+    ```
+
+    > [project page on OpneUPM](https://openupm.com/packages/com.yogi.devconsole/)
 
 ## How to setup
-  * For default [Input Manager](https://docs.unity3d.com/Manual/class-InputManager.html) drag `DevConsole_InputManager` prefab to scene.
-  
-  * For [New Input System](https://docs.unity3d.com/Packages/com.unity.inputsystem@1.5/manual/index.html) - drag `DevConsole_NewInputSystem` prefab to scene.
-  
+  * Drag prefab `DevConsole_GUI` to the scene.
+
   * Add `ENABLE_DEV_CONSOLE` define to `ProjectSettings -> Scripting Define Symbols`.
   
   ![image](https://user-images.githubusercontent.com/54948242/215025591-3be1c75e-9f0b-44ff-8eda-1f53fda5e3f0.png)
