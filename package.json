@@ -1,7 +1,7 @@
 {
   "name": "com.yogi.devconsole",
   "displayName": "DevConsole",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "unity": "2021.3",
   "description": "Developer console for Unity game engine.",
   "author": {
